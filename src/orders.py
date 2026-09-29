@@ -3,31 +3,26 @@ def get_items_subtotal(items):
     for item in items:
         price = item["price"]
         quantity = item["qty"]
-        if price > 0:
-            if quantity > 0:
-                subtotal = subtotal + price * quantity
+        if price <= 0 or quantity <= 0:
+            continue
+        subtotal = subtotal + price * quantity
     return subtotal
 
 def get_member_discount(member, subtotal):
-    if member == True:
-        if subtotal > 100:
-            discount = subtotal * 0.2
-        elif subtotal > 50:
-            discount = subtotal * 0.1
-        else:
-            discount = 0
-    else:
-        discount = 0
-    return discount
+    if not member:
+        return 0
+    if subtotal > 100:
+        return subtotal * 0.2
+    if subtotal > 50:
+        return subtotal * 0.1
+    return 0
 
 def get_shipping_cost(country):
     if country == "PK":
-        shipping = 5
-    elif country == "US":
-        shipping = 15
-    else:
-        shipping = 25
-    return shipping
+        return 5
+    if country == "US":
+        return 15
+    return 25
 
 def calc(order):
     subtotal = get_items_subtotal(order["items"])
